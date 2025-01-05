@@ -8,11 +8,13 @@
   <name>war-test Maven Webapp</name>
   <url>http://maven.apache.org</url>
    <properties>
+  <maven-war-plugin-groupId>org.apache.maven.plugins</maven-war-plugin-groupId>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
-        <junit.jupiter.version>5.5.2</junit.jupiter.version>
-        <junit.platform.version>1.5.2</junit.platform.version>
+        <junit.jupiter.version>5.11.4</junit.jupiter.version>
+        <junit.platform.version>1.11.0</junit.platform.version>
+         <maven-plugin-tools.version>3.13.1</maven-plugin-tools.version>
     </properties>
     <dependencies>
         <dependency>
@@ -33,8 +35,40 @@
       <version>3.1.0</version>
       <scope>provided</scope>
   </dependency>
+  <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>3.0</version>
+      <scope>provided</scope>
+    </dependency>
+  <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <version>${maven-plugin-tools.version}</version>
+      <scope>provided</scope>
+    </dependency>
     </dependencies>
-  <build>
+    
+   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-plugin-plugin</artifactId>
+          <version>${maven-plugin-tools.version}</version>
+          <executions>
+            <execution>
+              <id>help-mojo</id>
+              <goals>
+                <!-- good practice is to generate help mojo for plugin -->
+                <goal>helpmojo</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin> <artifactId>maven-assembly-plugin</artifactId> <configuration> <archive> <manifest> <mainClass>org.test.my_app_test.App</mainClass> </manifest> </archive> <descriptorRefs> <descriptorRef>jar-with-dependencies</descriptorRef> </descriptorRefs> </configuration> </plugin>
+      </plugins>
+    </pluginManagement>
     <finalName>war-test</finalName>
   </build>
 
